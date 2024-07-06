@@ -14,15 +14,15 @@ const client = new DynamoDBClient({});
 const dynamo = DynamoDBDocumentClient.from(client);
 
 export const DBOPERATION = Object.freeze({
-  CREATE: Symbol("CREATE"),
-  READ: Symbol("READ"),
-  UPDATE: Symbol("UPDATE"),
-  DELETE: Symbol("DELETE"),
-  SCAN: Symbol("SCAN"),
+  CREATE: "CREATE",
+  READ: "READ",
+  UPDATE: "UPDATE",
+  DELETE: "DELETE",
+  SCAN: "SCAN",
 });
 
 export const database_handler = async function (
-  DBOPERATION,
+  operation,
   tableName,
   jsonData
 ) {
@@ -34,24 +34,23 @@ export const database_handler = async function (
   };
 
   try {
-    switch (DBOPERATION.SCAN) {
+    switch (operation) {
       case DBOPERATION.SCAN:
         body = await dynamo.send(new ScanCommand({ TableName: tableName }));
         body = body.Items;
         break;
       case DBOPERATION.CREATE:
-        response = await dynamo.send(
+        await dynamo.send(
           new PutCommand({
             TableName: tableName,
-            Item: jsonData,
+            Item: JSON.parse(jsonData),
           })
         );
-        console.log(response);
         body = `Created item ${jsonData}`;
         break;
       default: {
         statusCode = 400;
-        body = `Unsupported operation: "${key}"`;
+        body = `Unsupported operation: "${DBOPERATION}"`;
       }
     }
   } catch (err) {
