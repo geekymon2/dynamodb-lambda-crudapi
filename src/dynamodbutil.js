@@ -13,7 +13,7 @@ const client = new DynamoDBClient({});
 
 const dynamo = DynamoDBDocumentClient.from(client);
 
-export const DBOPERATIONS = Object.freeze({
+export const DBOPERATION = Object.freeze({
   CREATE: Symbol("CREATE"),
   READ: Symbol("READ"),
   UPDATE: Symbol("UPDATE"),
@@ -21,7 +21,11 @@ export const DBOPERATIONS = Object.freeze({
   SCAN: Symbol("SCAN"),
 });
 
-export const database_handler = async function (DBOPERATIONS, tableName) {
+export const database_handler = async function (
+  DBOPERATION,
+  tableName,
+  jsonData
+) {
   let body = "OK";
   let statusCode = 200;
 
@@ -30,10 +34,20 @@ export const database_handler = async function (DBOPERATIONS, tableName) {
   };
 
   try {
-    switch (DBOPERATIONS.SCAN) {
-      case DBOPERATIONS.SCAN:
+    switch (DBOPERATION.SCAN) {
+      case DBOPERATION.SCAN:
         body = await dynamo.send(new ScanCommand({ TableName: tableName }));
         body = body.Items;
+        break;
+      case DBOPERATION.CREATE:
+        response = await dynamo.send(
+          new PutCommand({
+            TableName: tableName,
+            Item: jsonData,
+          })
+        );
+        console.log(response);
+        body = `Created item ${jsonData}`;
         break;
       default: {
         statusCode = 400;

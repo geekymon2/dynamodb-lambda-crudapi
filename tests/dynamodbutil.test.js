@@ -1,12 +1,20 @@
 // sum.test.js
 import { expect, test } from "vitest";
-import { database_handler } from "../dynamodbutil.js";
-import { DBOPERATIONS } from "../dynamodbutil.js";
+import { database_handler } from "../src/dynamodbutil.js";
+import { DBOPERATION } from "../src/dynamodbutil.js";
+import 'dotenv/config'
 
 test("Scan DynamoDB Table Test", async () => {
+  const response = await database_handler(DBOPERATION.SCAN, "donationstbl_dev");
+  console.log(response);
+  expect(response.statusCode).toBe(200);
+});
+
+test("Create DynamoDB Table Item Test", async () => {
   const response = await database_handler(
-    DBOPERATIONS.SCAN,
-    "donationstbl_dev"
+    DBOPERATION.CREATE,
+    "donationstbl_dev",
+    "{'id': '66890c9027d03022bc544087','amount': '$297.05','name': 'Owen Poole','suburb': 'Loveland'}"
   );
   console.log(response);
   expect(response.statusCode).toBe(200);

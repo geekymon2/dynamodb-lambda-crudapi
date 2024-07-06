@@ -23,9 +23,11 @@
   "homepage": "https://github.com/geekymon2/dynamodb-lambda-crudapi#readme",
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.609.0",
-    "@aws-sdk/lib-dynamodb": "^3.610.0"
+    "@aws-sdk/lib-dynamodb": "^3.610.0",
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
+    "@types/node": "^20.14.10",
     "vitest": "^1.6.0"
   }
 }
