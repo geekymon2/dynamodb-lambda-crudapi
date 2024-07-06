@@ -4,7 +4,7 @@
   "description": "Dynamo DB Lambda CRUD API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,12 @@
   "bugs": {
     "url": "https://github.com/geekymon2/dynamodb-lambda-crudapi/issues"
   },
-  "homepage": "https://github.com/geekymon2/dynamodb-lambda-crudapi#readme"
+  "homepage": "https://github.com/geekymon2/dynamodb-lambda-crudapi#readme",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.609.0",
+    "@aws-sdk/lib-dynamodb": "^3.610.0"
+  },
+  "devDependencies": {
+    "vitest": "^1.6.0"
+  }
 }
