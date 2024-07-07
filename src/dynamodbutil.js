@@ -11,11 +11,8 @@ const client = new DynamoDBClient({});
 
 const dynamo = DynamoDBDocumentClient.from(client);
 
-export const database_handler_get_all = async function (tableName) {
+export const database_handler_get_all = async function (params) {
   let body = "OK";
-  const params = {
-    TableName: tableName,
-  };
 
   try {
     const scanResults = [];

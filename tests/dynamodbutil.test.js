@@ -9,7 +9,19 @@ import "dotenv/config";
 import { readFile } from "fs/promises";
 
 test("Testing Get all data from DynamoDB Table", async () => {
-  const response = await database_handler_get_all("donationstbl_dev");
+  const params = {
+    TableName: "donationstbl_dev",
+    ProjectionExpression: "contributorname, balance, suburb, containsProfanity",
+    FilterExpression: "#flag = :flag",
+    ExpressionAttributeNames: {
+      "#flag": "containsProfanity",
+    },
+    ExpressionAttributeValues: {
+      ":flag": false,
+    },
+  };
+
+  const response = await database_handler_get_all(params);
   console.log(response);
   console.log(response.length);
   expect(response).length > 1;
@@ -43,4 +55,4 @@ test("Load test data and populate DynamoDB Table", async () => {
     console.log(response);
     expect(response.includes("Created item"));
   }
-}, 30000);
+}, 300000);

@@ -30,7 +30,19 @@ export const lambda_handler = async function (event, context) {
   try {
     switch (event.key) {
       case DBOPERATION.SCAN:
-        body = await database_handler_get_all(tableName);
+        const params = {
+          TableName: "donationstbl_dev",
+          ProjectionExpression:
+            "contributorname, balance, suburb, containsProfanity",
+          FilterExpression: "#flag = :flag",
+          ExpressionAttributeNames: {
+            "#flag": "containsProfanity",
+          },
+          ExpressionAttributeValues: {
+            ":flag": false,
+          },
+        };
+        body = await database_handler_get_all(params);
         break;
       case DBOPERATION.CREATE:
         body = await database_handler_create(
