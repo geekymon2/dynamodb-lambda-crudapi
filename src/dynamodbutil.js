@@ -11,7 +11,7 @@ const client = new DynamoDBClient({});
 
 const dynamo = DynamoDBDocumentClient.from(client);
 
-const headers = {
+export const headers = {
   "Content-Type": "application/json",
 };
 
