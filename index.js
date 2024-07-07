@@ -22,7 +22,7 @@ export const lambda_handler = async function (event, context) {
 
   if (event.key === undefined) {
     console.log(
-      `key is undefined, setting default value to ${DBOPERATION.SCAN}`
+      `Operation key is undefined, setting default value to ${DBOPERATION.SCAN}`
     );
     event.key = DBOPERATION.SCAN;
   }
