@@ -13,10 +13,19 @@ const dynamo = DynamoDBDocumentClient.from(client);
 
 export const database_handler_get_all = async function (tableName) {
   let body = "OK";
+  const params = {
+    TableName: tableName,
+  };
 
   try {
-    body = await dynamo.send(new ScanCommand({ TableName: tableName }));
-    body = body.Items;
+    const scanResults = [];
+    let items;
+    do {
+      items = await dynamo.send(new ScanCommand(params));
+      items.Items.forEach((item) => scanResults.push(item));
+      params.ExclusiveStartKey = items.LastEvaluatedKey;
+    } while (typeof items.LastEvaluatedKey !== "undefined");
+    body = scanResults;
   } catch (err) {
     body = err.message;
   }

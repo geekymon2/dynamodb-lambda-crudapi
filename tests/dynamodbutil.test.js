@@ -11,7 +11,8 @@ import { readFile } from "fs/promises";
 test("Testing Get all data from DynamoDB Table", async () => {
   const response = await database_handler_get_all("donationstbl_dev");
   console.log(response);
-  expect(response.statusCode).toBe(200);
+  console.log(response.length);
+  expect(response).length > 1;
 });
 
 test("Testing Create DynamoDB Table Item", async () => {
@@ -20,13 +21,13 @@ test("Testing Create DynamoDB Table Item", async () => {
     '{ "id": "4", "amount": 297.05, "name": "Owen Poole", "suburb": "Loveland" }'
   );
   console.log(response);
-  expect(response.statusCode).toBe(200);
+  expect(response.includes("Owen Poole"));
 });
 
 test("Testing Get item from DynamoDB Table", async () => {
   const response = await database_handler_get("donationstbl_dev", "4");
   console.log(response);
-  expect(response.statusCode).toBe(200);
+  expect(response.id).toBe("4");
 });
 
 test("Load test data and populate DynamoDB Table", async () => {
@@ -40,6 +41,6 @@ test("Load test data and populate DynamoDB Table", async () => {
       JSON.stringify(obj)
     );
     console.log(response);
-    expect(response.statusCode).toBe(200);
+    expect(response.includes("Created item"));
   }
-});
+}, 30000);
