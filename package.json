@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "dynamodb-lambda-crudapi",
   "version": "1.0.0",
   "description": "Dynamo DB Lambda CRUD API",
