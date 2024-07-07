@@ -1,6 +1,5 @@
 import { database_handler_get_all } from "./src/dynamodbutil.js";
 import { database_handler_create } from "./src/dynamodbutil.js";
-import { headers } from "./src/dynamodbutil.js";
 
 export const DBOPERATION = Object.freeze({
   CREATE: "CREATE",
@@ -8,9 +7,16 @@ export const DBOPERATION = Object.freeze({
   SCAN: "SCAN",
 });
 
+const headers = {
+  "Content-Type": "application/json",
+};
+
 const tableName = process.env.TABLE_NAME;
 
 export const lambda_handler = async function (event, context) {
+  let statusCode = 200;
+  let body = "OK";
+
   console.log("Running Lambda Handler for DynamoDB CRUD Operations");
   console.log(`Operation Key: ${event.key}`);
 
@@ -18,16 +24,19 @@ export const lambda_handler = async function (event, context) {
     console.log(
       `key is undefined, setting default value to ${DBOPERATION.SCAN}`
     );
-    event.routeKey = DBOPERATION.SCAN;
+    event.key = DBOPERATION.SCAN;
   }
 
   try {
     switch (event.key) {
       case DBOPERATION.SCAN:
-        await database_handler_get_all(tableName);
+        body = await database_handler_get_all(tableName);
         break;
       case DBOPERATION.CREATE:
-        await database_handler_create(tableName, JSON.stringify(event.data));
+        body = await database_handler_create(
+          tableName,
+          JSON.stringify(event.data)
+        );
         break;
       default: {
         statusCode = 400;

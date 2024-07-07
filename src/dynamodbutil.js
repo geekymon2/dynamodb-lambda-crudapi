@@ -11,27 +11,17 @@ const client = new DynamoDBClient({});
 
 const dynamo = DynamoDBDocumentClient.from(client);
 
-export const headers = {
-  "Content-Type": "application/json",
-};
-
 export const database_handler_get_all = async function (tableName) {
   let body = "OK";
-  let statusCode = 200;
 
   try {
     body = await dynamo.send(new ScanCommand({ TableName: tableName }));
     body = body.Items;
   } catch (err) {
-    statusCode = 500;
     body = err.message;
   }
 
-  return {
-    statusCode,
-    body,
-    headers,
-  };
+  return body;
 };
 
 export const database_handler_create = async function (
@@ -39,7 +29,6 @@ export const database_handler_create = async function (
   createDataJson
 ) {
   let body = "OK";
-  let statusCode = 200;
 
   try {
     await dynamo.send(
@@ -50,20 +39,14 @@ export const database_handler_create = async function (
     );
     body = `Created item ${createDataJson}`;
   } catch (err) {
-    statusCode = 500;
     body = err.message;
   }
 
-  return {
-    statusCode,
-    body,
-    headers,
-  };
+  return body;
 };
 
 export const database_handler_get = async function (tableName, id) {
   let body = "OK";
-  let statusCode = 200;
 
   try {
     let response = await dynamo.send(
@@ -76,13 +59,8 @@ export const database_handler_get = async function (tableName, id) {
     );
     body = response.Item;
   } catch (err) {
-    statusCode = 500;
     body = err.message;
   }
 
-  return {
-    statusCode,
-    body,
-    headers,
-  };
+  return body;
 };
