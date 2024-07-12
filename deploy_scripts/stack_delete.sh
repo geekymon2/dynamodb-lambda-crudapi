@@ -6,4 +6,4 @@ if [ -z "$ENV" ]; then
     exit 1
 fi
 
-aws cloudformation delete-stack --stack-name dynamo-lambda-crudapi-$ENV
+aws cloudformation delete-stack --stack-name dynamo-crud-api-$ENV
