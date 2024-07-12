@@ -9,7 +9,7 @@ import { readFile } from "fs/promises";
 
 test("Testing Get all data from DynamoDB Table", async () => {
   const params = {
-    TableName: "donationstbl_dev",
+    TableName: "dynamo_crud_table_dev",
     ProjectionExpression: "contributorname, balance, suburb, containsProfanity",
     FilterExpression: "#flag = :flag",
     ExpressionAttributeNames: {
@@ -28,7 +28,7 @@ test("Testing Get all data from DynamoDB Table", async () => {
 
 test("Testing Create DynamoDB Table Item", async () => {
   const response = await database_handler_create(
-    "donationstbl_dev",
+    tableName,
     '{ "id": "4", "amount": 297.05, "name": "Owen Poole", "suburb": "Loveland" }'
   );
   console.log(response);
@@ -36,7 +36,7 @@ test("Testing Create DynamoDB Table Item", async () => {
 });
 
 test("Testing Get item from DynamoDB Table", async () => {
-  const response = await database_handler_get("donationstbl_dev", "4");
+  const response = await database_handler_get("dynamo_crud_table_dev", "4");
   console.log(response);
   expect(response.id).toBe("4");
 });
@@ -48,7 +48,7 @@ test("Load test data and populate DynamoDB Table", async () => {
   for (let i = 0; i < data.length; i++) {
     const obj = data[i];
     const response = await database_handler_create(
-      "donationstbl_dev",
+      "dynamo_crud_table_dev",
       JSON.stringify(obj)
     );
     console.log(response);

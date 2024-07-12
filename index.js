@@ -31,7 +31,7 @@ export const lambda_handler = async function (event, context) {
     switch (event.key) {
       case DBOPERATION.SCAN:
         const params = {
-          TableName: "donationstbl_dev",
+          TableName: tableName,
           ProjectionExpression:
             "contributorname, balance, suburb, containsProfanity",
           FilterExpression: "#flag = :flag",
