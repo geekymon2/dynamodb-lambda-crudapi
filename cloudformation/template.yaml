@@ -11,10 +11,10 @@ Parameters:
 Resources:
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
-    DeletionPolicy: Retain
+    DeletionPolicy: Delete
     Properties:
       TableName: !Sub dynamo_crud_table_${Env}
-      DeletionProtectionEnabled: true
+      DeletionProtectionEnabled: false
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
